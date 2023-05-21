@@ -42,9 +42,11 @@ def load_model_and_images():
         filenames.extend([os.path.join(dirpath, name) for name in sorted(filenames_in_dir) if name.endswith('.jpg')])
     return model, filenames
 
+# defining function to extract image number from path
 def extract_image_number_from_path(path):
-    # Extracts the image number from the file path
+    # extracting image number from file path
     filename = os.path.basename(path)
+    # removing file extension
     image_number = os.path.splitext(filename)[0]
     return int(image_number)
 
@@ -65,10 +67,13 @@ def feature_extractor(model, filenames, target_idx):
     idxs = indices[0][1:4]
     return idxs
 
+# defining function to plot images
 def plot_images(filenames, idxs, target_idx, target_image_number):
+    # creating basefolder variable to use in plot title from target image path
     basefolder = os.path.basename(os.path.dirname(filenames[target_idx]))
     # create 2x2 plot with target image and 3 most similar images
     fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+    # setting title of plot
     fig.suptitle(f"Target Image {target_image_number:03d} ({basefolder}) and its 3 most similar images")
     # plotting target image
     axs[0, 0].imshow(mpimg.imread(filenames[target_idx]))
@@ -83,6 +88,7 @@ def plot_images(filenames, idxs, target_idx, target_image_number):
     # saving plot as a single image
     plt.savefig(f"out/{basefolder}_target_{target_image_number:03d}_and_knn_images.png")
 
+# defining main function
 def main():
     # defining argument parser
     parser = argparse.ArgumentParser(description='Find similar images to a target image using k-nearest neighbor.')

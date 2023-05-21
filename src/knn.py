@@ -2,7 +2,7 @@
 # Date hand-in: 24/5 - 2023
 
 # Description: This script finds the three most similar images to a target image using k-nearest neighbor.
-# The script is run from the command line and takes one argument: the path to the target image file.
+# The script is run from the command line and takes one argument: the path to the target image.
 # The script outputs a plot with the target image and its three most similar images, as well as a csv file with the distance metric for all images.
 
 # importing operating system
@@ -42,14 +42,6 @@ def load_model_and_images():
         filenames.extend([os.path.join(dirpath, name) for name in sorted(filenames_in_dir) if name.endswith('.jpg')])
     return model, filenames
 
-# defining function to extract image number from path
-def extract_image_number_from_path(path):
-    # extracting image number from file path
-    filename = os.path.basename(path)
-    # removing file extension
-    image_number = os.path.splitext(filename)[0]
-    return int(image_number)
-
 def feature_extractor(model, filenames, target_idx):
     # creating list to store features for each image
     feature_list = []
@@ -61,11 +53,19 @@ def feature_extractor(model, filenames, target_idx):
     neighbors = NearestNeighbors(n_neighbors=10,
                                 algorithm='brute',
                                 metric='cosine').fit(feature_list)
-    # calculating distances and indices of k-nearest neighbors from feature_list
+    # calculating indices of k-nearest neighbors from feature_list
     _, indices = neighbors.kneighbors([feature_list[target_idx]])
     # saving indices of nearest neighbors
     idxs = indices[0][1:4]
     return idxs
+
+# defining function to extract image number from path
+def extract_image_number_from_path(path):
+    # extracting image number from file path
+    filename = os.path.basename(path)
+    # removing file extension
+    image_number = os.path.splitext(filename)[0]
+    return int(image_number)
 
 # defining function to plot images
 def plot_images(filenames, idxs, target_idx, target_image_number):
@@ -96,16 +96,16 @@ def main():
     parser.add_argument('--target', type=str, help='Path to the target image file.')
     # parsing arguments
     args = parser.parse_args()
-    # target image file
-    target_file = args.target
+    # getting target image
+    target_img = args.target
     # loading model and images
     model, filenames = load_model_and_images()
     # finding the index of the target image in the filenames list
-    target_idx = filenames.index(target_file)
-    # extracting the image number from the target path file
-    target_image_number = extract_image_number_from_path(target_file)
+    target_idx = filenames.index(target_img)
     # extracting features from images
     idxs = feature_extractor(model, filenames, target_idx)
+    # extracting the image number from the target path file
+    target_image_number = extract_image_number_from_path(target_img)
     # plotting images
     plot_images(filenames, idxs, target_idx, target_image_number)
 

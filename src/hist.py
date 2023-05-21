@@ -2,7 +2,7 @@
 # Date hand-in: 24/5 - 2023
 
 # Description: This script finds the three most similar images to a target image using k-nearest neighbor.
-# The script is run from the command line and takes one argument: the path to the target image file.
+# The script is run from the command line and takes one argument: the path to the target image.
 # The script outputs a plot with the target image and its three most similar images, as well as a csv file with the distance metric for all images.
 
 # importing operating system
@@ -59,11 +59,11 @@ def all_images(hist_target_norm):
     return root_dir, df
 
 # defining function for plotting images
-def plot_images(images, filenames, output_path, target_image_number, target_folder, df):
+def plot_images(images, filenames, output_path, target_image_number, base_folder, df):
     # creating figure and axes
     fig, axs = plt.subplots(2, 2, figsize=(10, 10))
     # setting title
-    fig.suptitle(f"Target Image {target_image_number} ({target_folder}) and its 3 most similar images")
+    fig.suptitle(f"Target Image {target_image_number} ({base_folder}) and its 3 most similar images")
     # creating for loop for images and axes
     for i, ax in enumerate(axs.flatten()):
         # creating if statement for i < len(images)
@@ -85,7 +85,7 @@ def plot_images(images, filenames, output_path, target_image_number, target_fold
     # saving figure
     fig.savefig(output_path)
     # saving dataframe as csv file
-    df.to_csv(f"out/{target_folder}_target_{target_image_number}_distance_metric.csv", index=False)
+    df.to_csv(f"out/{base_folder}_target_{target_image_number}_distance_metric.csv", index=False)
 
 # defining function for saving top 3 images
 def save_top3(df, target_image_path, root_dir, target_image_number):
@@ -96,9 +96,9 @@ def save_top3(df, target_image_path, root_dir, target_image_number):
     target_image = cv2.imread(target_image_path)
     # appending target image and target image path to images and filenames
     images.append(target_image)
-    target_folder = os.path.basename(os.path.dirname(target_image_path))
+    base_folder = os.path.basename(os.path.dirname(target_image_path))
     # appending target image path to filenames
-    filenames.append(os.path.join(target_folder, os.path.basename(target_image_path)))
+    filenames.append(os.path.join(base_folder, os.path.basename(target_image_path)))
     # creating dataframe for top 3 images
     top3_df = df[df['Filename'] != os.path.basename(target_image_path)].head(3)
     # creating for loop for row in top3_df.iterrows()
@@ -120,9 +120,9 @@ def save_top3(df, target_image_path, root_dir, target_image_number):
             # appending image path to filenames
             filenames.append(os.path.join(folder, filename))
     # creating output path for images and filenames with target image number and target folder
-    output_path = os.path.join("out", f"{target_folder}_target_{target_image_number}_and_hist_images.png")
+    output_path = os.path.join("out", f"{base_folder}_target_{target_image_number}_and_hist_images.png")
     # calling function for plotting images
-    plot_images(images, filenames, output_path, target_image_number, target_folder, df)
+    plot_images(images, filenames, output_path, target_image_number, base_folder, df)
 
 # defining main function
 def main():
@@ -130,7 +130,7 @@ def main():
     parser = argparse.ArgumentParser(description='Find similar images to a target image using histogram comparison.')
     parser.add_argument('--target', type=str, help='Path to the target image file.')
     args = parser.parse_args()
-    # calling function for target image
+    # getting target image
     target_img = args.target
     # getting target image number
     target_image_number = os.path.splitext(os.path.basename(target_img))[0]
@@ -138,7 +138,7 @@ def main():
     hist_target_norm = target_image(target_img)
     # calling function for all images
     root_dir, df = all_images(hist_target_norm)
-    # calling function for saving top 3 images
+    # calling function for saving and plotting top 3 images 
     save_top3(df, target_img, root_dir, target_image_number)
 
 if __name__ == "__main__":

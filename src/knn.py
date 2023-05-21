@@ -1,3 +1,10 @@
+# Author: Mia Kuntz
+# Date hand-in: 24/5 - 2023
+
+# Description: This script finds the three most similar images to a target image using k-nearest neighbor.
+# The script is run from the command line and takes one argument: the path to the target image file.
+# The script outputs a plot with the target image and its three most similar images, as well as a csv file with the distance metric for all images.
+
 # importing operating system
 import os
 # importing sys
@@ -96,6 +103,8 @@ def main():
     # plotting images
     plot_images(filenames, idxs, target_idx, target_image_number)
 
-
 if __name__ == "__main__":
     main()
+
+# Command line arguments example: 
+# python3 src/knn.py --target in/archive/train/JULIA/001.jpg

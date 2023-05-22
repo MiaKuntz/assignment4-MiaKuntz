@@ -50,7 +50,7 @@ def feature_extractor(model, filenames, target_idx):
         # extracting features from image
         feature_list.append(ef.extract_features(filenames[i], model))
     # using k-nearest neighbors to find similar images
-    neighbors = NearestNeighbors(n_neighbors=10,
+    neighbors = NearestNeighbors(n_neighbors=5,
                                 algorithm='brute',
                                 metric='cosine').fit(feature_list)
     # calculating indices of k-nearest neighbors from feature_list

@@ -1,4 +1,4 @@
-# Assignment 4 - Different approaches to finding similar images
+# Assignment 4 - Identifying most similar images via Histogram Feature Extraction and K-Nearest Neighbours
 This assignment focuses on designing image search algorithms of the Butterflies and Moths dataset via comparison of histogram values and k-nearest neighbours. The objective is to create two Python scripts for the extraction of colour histograms and the k-nearest neighbours, which should both be readable and reproducible, along with saving distance metrics, the three most similar images from the histogram values and three most similar images from the nearest neighbour’s calculation. The purpose is to be able to find and plot possible differences in results between the two methods of finding similar images to a target image.
 
 ## Tasks

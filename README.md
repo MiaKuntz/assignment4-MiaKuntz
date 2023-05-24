@@ -51,7 +51,7 @@ And:
 
     python3 src/knn.py --target 
 
-This will active the scripts. When running, it will go through each of the functions in the order written in my main functions. That is:
+This will activate the scripts. When running, it will go through each of the functions in the order written in my main functions. That is:
 -	Creating parser argument for target image.
 -	Getting target image, and at some point, extract the target image number.
 -	The histogram script is then:

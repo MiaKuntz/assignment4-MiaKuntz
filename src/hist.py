@@ -1,9 +1,9 @@
 # Author: Mia Kuntz
 # Date hand-in: 24/5 - 2023
 
-# Description: This script finds the three most similar images to a target image using k-nearest neighbor.
+# Description: This script finds the three most similar images to a target image using histogram comparison.
 # The script is run from the command line and takes one argument: the path to the target image.
-# The script outputs a plot with the target image and its three most similar images, as well as a csv file with the distance metric for all images.
+# The script outputs a plot with the target image and its three most similar images, as well as a csv file with the distance metric for these images.
 
 # importing operating system
 import os
